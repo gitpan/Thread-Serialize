@@ -3,7 +3,7 @@ package Thread::Serialize;
 # Make sure we have version info for this module
 # Make sure we do everything by the book from now on
 
-$VERSION = '0.07';
+$VERSION = '0.09';
 use strict;
 
 # Make sure we only load things that we need when we need it
@@ -166,6 +166,11 @@ data-structure will be returned.
 
 It is up to the developer to make sure that single argument calls to L<freeze>
 are always matched by scalar context calls to L<thaw>.
+
+=head1 REQUIRED MODULES
+
+ load (0.10)
+ Storable (any)
 
 =head1 OPTIMIZATIONS
 
