@@ -1,3 +1,9 @@
+0.07	18 September 2003
+	Upgraded dependency on load to 0.09.
+
+	17 August 2003
+	Some documentation fixes: we're not using AutoLoader anymore.
+
 0.06	11 August 2003
 	Fixed some nits in Makefile.PL.  Updated copyright notice.
 

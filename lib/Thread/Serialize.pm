@@ -3,7 +3,7 @@ package Thread::Serialize;
 # Make sure we have version info for this module
 # Make sure we do everything by the book from now on
 
-$VERSION = '0.06';
+$VERSION = '0.07';
 use strict;
 
 # Make sure we only load things that we need when we need it
@@ -169,7 +169,7 @@ are always matched by scalar context calls to L<thaw>.
 
 =head1 OPTIMIZATIONS
 
-To reduce memory and CPU usage, this module uses L<AutoLoader>.  This causes
+To reduce memory and CPU usage, this module uses L<load>.  This causes
 subroutines only to be compiled in a thread when they are actually needed at
 the expense of more CPU when they need to be compiled.  Simple benchmarks
 however revealed that the overhead of the compiling single routines is not
@@ -190,6 +190,6 @@ modify it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Thread::Conveyor>, L<Thread::Pool>, L<Thread::Tie>.
+L<load>, L<Thread::Conveyor>, L<Thread::Pool>, L<Thread::Tie>.
 
 =cut
