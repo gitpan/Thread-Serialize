@@ -3,26 +3,28 @@ package Thread::Serialize;
 # Make sure we have version info for this module
 # Make sure we do everything by the book from now on
 
-our $VERSION : unique = '0.01';
+our $VERSION = '0.02';
 use strict;
 
+# Make sure we only load things that we need when we need it
+
+use AutoLoader 'AUTOLOAD';
+
 # Make sure we can freeze and thaw
+# Create iced signature, use pre-frozen unless externally indicated otherwise
 
 use Storable ();
-
-# Obtain reference to Storable's freeze routine
-# Obtain reference to Storable's thaw routine
-# Make sure the freeze and thaw routines are in memory
-# Create the iced signature
-
-my $freeze = \&Storable::freeze;
-my $thaw = \&Storable::thaw;
-$thaw->( $freeze->( [] ) );
-my $iced = unpack( 'l',$freeze->( [] ) );
+our $iced = exists( $ENV{'NOT_ICED'} ) ? # can't use my(), bug?
+ unpack( 'l',Storable::freeze( [] ) ) :
+ 822347012; # pre-frozen on 30 August 2002 with Storable 2.04
 
 # Satisfy -require-
 
 1;
+
+# AutoLoader takes over from here
+
+__END__
 
 #---------------------------------------------------------------------------
 #  IN: 1..N parameters to freeze
@@ -39,7 +41,7 @@ sub freeze {
 
     if (@_) {
         foreach (@_) {
-            return $freeze->( \@_ ) if !defined() or ref() or m#\0#;
+            return Storable::freeze( \@_ ) if !defined() or ref() or m#\0#;
         }
         return join( "\0",@_ );
     } else {
@@ -67,10 +69,10 @@ sub thaw {
 #  Return the string
 
     if (wantarray) {
-        return @{$thaw->( $_[0] )} if unpack( 'l',$_[0] ) == $iced;
+        return @{Storable::thaw( $_[0] )} if unpack( 'l',$_[0] ) == $iced;
         split( "\0",$_[0] )
     } elsif (unpack( 'l',$_[0] ) == $iced) {
-        $thaw->( $_[0] )->[0];
+        Storable::thaw( $_[0] )->[0];
     } else {
 	return $1 if $_[0] =~ m#^([^\0]*)#;
         $_[0];
@@ -100,20 +102,18 @@ sub import {
 
 #---------------------------------------------------------------------------
 
-__END__
-
 =head1 NAME
 
 Thread::Serialize - serialize data-structures between threads
 
 =head1 SYNOPSIS
 
-    use Thread::Serialize;    # export freeze() and thaw()
+  use Thread::Serialize;    # export freeze() and thaw()
 
-    use Thread::Serialize (); # must call fully qualified subs
+  use Thread::Serialize (); # must call fully qualified subs
 
-    my $frozen = freeze( any data structure );
-    any data structure = thaw( $frozen );
+  my $frozen = freeze( any data structure );
+  any data structure = thaw( $frozen );
 
 =head1 DESCRIPTION
 
@@ -160,6 +160,33 @@ data-structure will be returned.
 
 It is up to the developer to make sure that single argument calls to L<freeze>
 are always matched by scalar context calls to L<thaw>.
+
+=head1 OPTIMIZATIONS
+
+To reduce memory and CPU usage, this module uses L<AutoLoader>.  This causes
+subroutines only to be compiled in a thread when they are actually needed at
+the expense of more CPU when they need to be compiled.  Simple benchmarks
+however revealed that the overhead of the compiling single routines is not
+much more (and sometimes a lot less) than the overhead of cloning a Perl
+interpreter with a lot of subroutines pre-loaded.
+
+=head1 CAVEATS
+
+As an extra optimization, the signature value for frozen Storable values is
+pre-computed.  This may break however with future versions.  If you should
+experience breakage, then you can cause the signature value to be re-computed
+at compile time by specifying the environment variable B<NOT_ICED>, either
+before you start Perl or by adding
+
+  BEGIN { $ENV{NOT_ICED} = 1 }
+
+before the C<use Thread::Serialize>.  Or, if you feel sure about yourself,
+you can assign the signature yourself thus:
+
+  $Thread::Serialize::iced = unpack( 'l',Storable::freeze( [] ) );
+
+before actually executing any code.  However, this will break the optimization
+of not needing the freeze() code in every thread.
 
 =head1 AUTHOR
 

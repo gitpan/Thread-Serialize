@@ -1,2 +1,14 @@
+0.02	30 August 2002
+	Now uses pre-frozen signature value unless told otherwise.  This saves
+	Storable::freeze to have to be available in all threads.  Can be
+	circumvented by specifying NOT_ICED environment variable.  Added
+	OPTIMIZATIONS and CAVEATS sections to the pod.
+
+	Added support for AutoLoader.  Together with all of the other Thread::
+	modules, this should start saving a lot of memory.
+
+	Removed reference tricks: we should find other ways of saving memory
+	with threads.
+
 0.01	13 August 2002
 	First version of Thread::Serialize.
