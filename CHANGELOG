@@ -1,3 +1,9 @@
+0.03	10 September 2002
+	Removed the NOT_ICED environment variable hack and its documentation.
+	Replaced by having an external Perl process calculate the Storable
+	(iced) signature at load time.  This should be compatible with all
+	versions of Storable on all possible OS's and hardware architectures.
+
 0.02	30 August 2002
 	Now uses pre-frozen signature value unless told otherwise.  This saves
 	Storable::freeze to have to be available in all threads.  Can be

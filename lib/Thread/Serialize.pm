@@ -3,7 +3,7 @@ package Thread::Serialize;
 # Make sure we have version info for this module
 # Make sure we do everything by the book from now on
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 use strict;
 
 # Make sure we only load things that we need when we need it
@@ -11,12 +11,16 @@ use strict;
 use AutoLoader 'AUTOLOAD';
 
 # Make sure we can freeze and thaw
-# Create iced signature, use pre-frozen unless externally indicated otherwise
 
 use Storable ();
-our $iced = exists( $ENV{'NOT_ICED'} ) ? # can't use my(), bug?
- unpack( 'l',Storable::freeze( [] ) ) :
- 822347012; # pre-frozen on 30 August 2002 with Storable 2.04
+
+# Execute external perl to obtain Storable signature (saves memory here)
+
+open( my $handle,
+ qq($^X -MStorable -e "print unpack('l',Storable::freeze( [] ))" | )
+) or die "Cannot determine Storable signature\n";
+our $iced = <$handle>;
+undef( $handle );
 
 # Satisfy -require-
 
@@ -169,24 +173,6 @@ the expense of more CPU when they need to be compiled.  Simple benchmarks
 however revealed that the overhead of the compiling single routines is not
 much more (and sometimes a lot less) than the overhead of cloning a Perl
 interpreter with a lot of subroutines pre-loaded.
-
-=head1 CAVEATS
-
-As an extra optimization, the signature value for frozen Storable values is
-pre-computed.  This may break however with future versions.  If you should
-experience breakage, then you can cause the signature value to be re-computed
-at compile time by specifying the environment variable B<NOT_ICED>, either
-before you start Perl or by adding
-
-  BEGIN { $ENV{NOT_ICED} = 1 }
-
-before the C<use Thread::Serialize>.  Or, if you feel sure about yourself,
-you can assign the signature yourself thus:
-
-  $Thread::Serialize::iced = unpack( 'l',Storable::freeze( [] ) );
-
-before actually executing any code.  However, this will break the optimization
-of not needing the freeze() code in every thread.
 
 =head1 AUTHOR
 
