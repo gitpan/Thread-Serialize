@@ -3,7 +3,7 @@ package Thread::Serialize;
 # Make sure we have version info for this module
 # Make sure we do everything by the book from now on
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 use strict;
 
 # Make sure we only load things that we need when we need it
@@ -73,9 +73,9 @@ sub thaw {
 #  Return the string
 
     if (wantarray) {
-        return @{Storable::thaw( $_[0] )} if unpack( 'l',$_[0] ) == $iced;
+        return @{Storable::thaw( $_[0] )} if (unpack( 'l',$_[0] )||0) == $iced;
         split( "\0",$_[0] )
-    } elsif (unpack( 'l',$_[0] ) == $iced) {
+    } elsif ((unpack( 'l',$_[0] )||0) == $iced) {
         Storable::thaw( $_[0] )->[0];
     } else {
 	return $1 if $_[0] =~ m#^([^\0]*)#;

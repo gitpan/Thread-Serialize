@@ -1,3 +1,7 @@
+0.04	22 September 2002
+	Fixed warnings when running under -w.  Thanks to Chris Rosebrugh for
+	the spot.
+
 0.03	10 September 2002
 	Removed the NOT_ICED environment variable hack and its documentation.
 	Replaced by having an external Perl process calculate the Storable
