@@ -3,7 +3,7 @@ package Thread::Serialize;
 # Make sure we have version info for this module
 # Make sure we do everything by the book from now on
 
-$VERSION = '0.09';
+$VERSION = '0.10';
 use strict;
 
 # Make sure we only load things that we need when we need it
@@ -14,13 +14,22 @@ use load;
 
 use Storable ();
 
-# Execute external perl to obtain Storable signature (saves memory here)
+# Initialize Storable signature
+# If we should not use an external Perl to determine signature
+#  Use local copy of routines, causing AutoLoader to load lot's of stuff
+# Else
+#  Execute external perl to obtain Storable signature (saves memory here)
 
-open( my $handle,
- qq($^X -MStorable -e "print unpack('l',Storable::freeze( [] ))" | )
-) or die "Cannot determine Storable signature\n";
-our $iced = <$handle>;
-undef( $handle );
+our $iced;
+if ($Thread::Serialize::no_external_perl) {
+    $iced = unpack( 'l',Storable::freeze( [] ));
+    $Thread::Serialize::no_external_perl = 'Signature obtained locally';
+} else {
+    open( my $handle,
+     qq($^X -MStorable -e "print unpack('l',Storable::freeze( [] ))" | )
+    ) or die "Cannot determine Storable signature\n";
+    $iced = <$handle>;
+}
 
 # Satisfy -require-
 
@@ -181,6 +190,24 @@ however revealed that the overhead of the compiling single routines is not
 much more (and sometimes a lot less) than the overhead of cloning a Perl
 interpreter with a lot of subroutines pre-loaded.
 
+To reduce the number of modules and subroutines loaded, an external Perl
+interpreter is started to determine the Storable signature at compile time.
+In some situations this may cause a problem: please set the
+C<$Thread::Serialize::no_external_perl> variable to a true value at compile
+time B<before> loading Thread::Serialize if this causes a problem.
+
+ BEGIN { $Thread::Serialize::no_external_perl = 1 }
+ use Thread::Serialize;
+
+=head1 KNOWN ISSUES
+
+=head2 Embedded Perls
+
+Philip Monsen reported that in the case of an embedded Perl interpreter (e.g.
+in a C program), the use of an external executor to determine the Storable
+signature, causes problems.  This has been fixed by introducing the global
+variable C<$Thread::Serialize::no_external_perl> (see L<OPTIMIZATIONS>).
+
 =head1 AUTHOR
 
 Elizabeth Mattijsen, <liz@dijkmat.nl>.
@@ -189,7 +216,7 @@ Please report bugs to <perlbugs@dijkmat.nl>.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2002-2003 Elizabeth Mattijsen <liz@dijkmat.nl>. All rights
+Copyright (c) 2002-2004 Elizabeth Mattijsen <liz@dijkmat.nl>. All rights
 reserved.  This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 

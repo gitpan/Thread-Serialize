@@ -1,3 +1,8 @@
+0.10	29 September 2004
+	Added support for $Thread::Serialize::no_external_perl to prevent
+	problems when used in embedded Perls.  Spotted by Philip Monsen.
+	Added documentation and additional tests in the test-suite.
+
 0.09	28 December 2003
 	Added automatic required modules update using Devel::Required.
 
