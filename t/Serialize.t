@@ -33,4 +33,4 @@ ok( !defined( thaw($frozen) ),			'check contents' );
 
 my %hash = (a => 'A', b => 'B', c => 'C');
 $frozen = freeze( \%hash );
-is( join('',%{thaw($frozen)}),join('',%hash),	'check contents' );
+is( join('',sort %{thaw($frozen)}),join('',sort %hash),	'check contents' );

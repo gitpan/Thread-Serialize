@@ -6,3 +6,4 @@ VERSION
 Makefile.PL
 lib/Thread/Serialize.pm
 t/Serialize.t
+META.yml                                Module meta-data (added by MakeMaker)

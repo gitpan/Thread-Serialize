@@ -4,12 +4,11 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile (
  NAME		=> "Thread::Serialize",
- ($[ >= 5.005) ?
- (AUTHOR	=> 'Elizabeth Mattijsen (liz@dijkmat.nl)',
-  ABSTRACT	=> 'serialize data-structures between threads') : (),
+ AUTHOR		=> 'Elizabeth Mattijsen (liz@dijkmat.nl)',
+ ABSTRACT	=> 'serialize data-structures between threads',
  VERSION_FROM	=> 'lib/Thread/Serialize.pm',
  PREREQ_PM	=> {
-		   load => '0.02',
+		   load => '0.03',
 		   Storable => 0,
                    },
 );
