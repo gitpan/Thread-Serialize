@@ -9,6 +9,7 @@ WriteMakefile (
   ABSTRACT	=> 'serialize data-structures between threads') : (),
  VERSION_FROM	=> 'lib/Thread/Serialize.pm',
  PREREQ_PM	=> {
+		   load => '0.02',
 		   Storable => 0,
                    },
 );

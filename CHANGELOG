@@ -1,3 +1,10 @@
+0.05	30 September 2002
+	Removed support for AutoLoader and replaced it by support for "load.pm".
+	Added dependency on "load" to Makefile.PL.
+
+        Removed "our" from $VERSION, should shave off some bytes in memory
+	usage, as found from testing with Benchmark::Thread::Size.
+
 0.04	22 September 2002
 	Fixed warnings when running under -w.  Thanks to Chris Rosebrugh for
 	the spot.
