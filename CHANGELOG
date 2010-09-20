@@ -1,3 +1,6 @@
+0.11	20 September 2010
+	Checking the tool chain with perl 5.13.5.
+
 0.10	29 September 2004
 	Added support for $Thread::Serialize::no_external_perl to prevent
 	problems when used in embedded Perls.  Spotted by Philip Monsen.

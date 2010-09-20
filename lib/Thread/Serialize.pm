@@ -3,7 +3,7 @@ package Thread::Serialize;
 # Make sure we have version info for this module
 # Make sure we do everything by the book from now on
 
-$VERSION = '0.10';
+$VERSION = '0.11';
 use strict;
 
 # Make sure we only load things that we need when we need it
@@ -130,6 +130,10 @@ Thread::Serialize - serialize data-structures between threads
   my $frozen = freeze( any data structure );
   any data structure = thaw( $frozen );
 
+=head1 VERSION
+
+This documentation describes version 0.11.
+
 =head1 DESCRIPTION
 
                   *** A note of CAUTION ***
@@ -216,7 +220,7 @@ Please report bugs to <perlbugs@dijkmat.nl>.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2002-2004 Elizabeth Mattijsen <liz@dijkmat.nl>. All rights
+Copyright (c) 2002-2004, 2010 Elizabeth Mattijsen <liz@dijkmat.nl>. All rights
 reserved.  This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
 

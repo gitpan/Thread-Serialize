@@ -1,12 +1,23 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         Thread-Serialize
-version:      0.10
-version_from: lib/Thread/Serialize.pm
-installdirs:  site
+--- #YAML:1.0
+name:               Thread-Serialize
+version:            0.11
+abstract:           serialize data-structures between threads
+author:
+    - Elizabeth Mattijsen (liz@dijkmat.nl)
+license:            unknown
+distribution_type:  module
+configure_requires:
+    ExtUtils::MakeMaker:  0
+build_requires:
+    ExtUtils::MakeMaker:  0
 requires:
-    load:                          0.10
-    Storable:                      0
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.17
+    load:      0.10
+    Storable:  0
+no_index:
+    directory:
+        - t
+        - inc
+generated_by:       ExtUtils::MakeMaker version 6.57_05
+meta-spec:
+    url:      http://module-build.sourceforge.net/META-spec-v1.4.html
+    version:  1.4
