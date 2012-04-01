@@ -1,9 +1,8 @@
 MANIFEST
 CHANGELOG
 README
-TODO
-VERSION
 Makefile.PL
 lib/Thread/Serialize.pm
 t/Serialize.t
 META.yml                                Module meta-data (added by MakeMaker)
+META.json                                Module JSON meta-data (added by MakeMaker)

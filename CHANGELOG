@@ -1,3 +1,7 @@
+0.12	1 April 2012
+	Some cleanup in distro.  Some code cleanup as well, as well as some
+	code esthetics.  Verified it work with 5.14.2.
+
 0.11	20 September 2010
 	Checking the tool chain with perl 5.13.5.
 
