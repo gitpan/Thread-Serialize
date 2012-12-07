@@ -4,9 +4,8 @@ Library for data-structure serialization between threads.
 
                          *** A note of CAUTION ***
 
-This module only functions on Perl versions 5.8.0 and later.  And then
-only when threads are enabled with -Dusethreads.  It is of no use with
-any version of Perl before 5.8.0 or without threads enabled.
+This module only functions if threading has been enabled when building
+Perl, or if the "forks" module has been installed on an unthreaded Perl.
 
                          *************************
 
@@ -15,11 +14,11 @@ All rights reserved.  This program is free software; you can redistribute it
 and/or modify it under the same terms as Perl itself.
 
 Version:
- 1.00
+ 0.14
 
 Required Modules:
+ load (0.10)
  Storable (any)
- Test::More (0.88)
 
 Installation:
 This distribution contains two versions of the code: one maintenance version
@@ -46,5 +45,8 @@ systems like so:
 
 If your perl does not support the "blead" version of the code, then it will
 automatically install the "maint" version of the code.
+
+Please note that any additional parameters will simply be passed on to the
+underlying Makefile.PL processing.
 
 

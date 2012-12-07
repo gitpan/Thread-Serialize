@@ -19,5 +19,5 @@ no_index:
     - inc
 requires:
   Storable: 0
-  Test::More: 0.88
-version: 1.00
+  load: 0.10
+version: 0.14

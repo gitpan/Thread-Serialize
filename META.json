@@ -33,10 +33,10 @@
       "runtime" : {
          "requires" : {
             "Storable" : "0",
-            "Test::More" : "0.88"
+            "load" : "0.10"
          }
       }
    },
    "release_status" : "stable",
-   "version" : "1.00"
+   "version" : "0.14"
 }

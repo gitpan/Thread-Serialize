@@ -1,13 +1,12 @@
-use 5.014;
-#package Thread::Serialize '1.00'; # not supported by PAUSE or MetaCPAN :-(
-package Thread::Serialize;         # please remove if no longer needed
+package Thread::Serialize;
 
-our $VERSION= '1.00';              # please remove if no longer needed
+$VERSION= '0.14';
 
-# be as verbose as possble
-use warnings;;
+# be as strict as possble
+use strict;
 
 # modules that we need
+use load;
 use Storable ();
 
 # use ourselves to determine signature
@@ -20,13 +19,17 @@ if ( $Thread::Serialize::no_external_perl ) {
 # use external perl to create signature
 else {
     open( my $handle,
-      qq( $^X -MStorable -e "print unpack( 'l', Storable::freeze( [] ) )" | )
+      qq($^X -MStorable -e "print unpack('l',Storable::freeze( [] ))" | )
     ) or die "Cannot determine Storable signature\n";
     $iced= readline $handle;
 }
 
 # satisfy -require-
 1;
+
+# The following subroutines are loaded on demand only
+
+__END__
 
 #-------------------------------------------------------------------------------
 # freeze
@@ -118,14 +121,18 @@ Thread::Serialize - serialize data-structures between threads
 
 =head1 VERSION
 
-This documentation describes version 1.00.
+This documentation describes version 0.14.
 
 =head1 DESCRIPTION
 
                   *** A note of CAUTION ***
 
- This module only functions if threading has been enabled when building
- Perl, or if the "forks" module has been installed on an unthreaded Perl.
+ This module only functions on threaded perl or an unthreaded perl
+ with the "forks" module installed.
+
+ Please also note that this documentation describes the "maint" version
+ of this code.  This version is essentially frozen.  Please use a 5.14
+ or higher version of perl for the "blead" version of this code.
 
                   *************************
 
@@ -166,35 +173,8 @@ are always matched by scalar context calls to L<thaw>.
 
 =head1 REQUIRED MODULES
 
+ load (0.10)
  Storable (any)
- Test::More (0.88)
-
-=head1 INSTALLATION
-
-This distribution contains two versions of the code: one maintenance version
-for versions of perl < 5.014 (known as 'maint'), and the version currently in
-development (known as 'blead').  The standard build for your perl version is:
-
- perl Makefile.PL
- make
- make test
- make install
-
-This will try to test and install the "blead" version of the code.  If the
-Perl version does not support the "blead" version, then the running of the
-Makefile.PL will *fail*.  In such a case, one can force the installing of
-the "maint" version of the code by doing:
-
- perl Makefile.PL maint
-
-Alternately, if you want automatic selection behavior, you can set the
-AUTO_SELECT_MAINT_OR_BLEAD environment variable to a true value.  On Unix-like
-systems like so:
-
- AUTO_SELECT_MAINT_OR_BLEAD=1 perl Makefile.PL
-
-If your perl does not support the "blead" version of the code, then it will
-automatically install the "maint" version of the code.
 
 =head1 OPTIMIZATIONS
 
